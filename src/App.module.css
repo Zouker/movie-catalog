@@ -1,0 +1,124 @@
+.wrapper {
+    max-height: 100vh;
+}
+
+.title {
+    text-align: center;
+}
+
+.searchLine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.catalog {
+    display: grid;
+    grid-template-columns: 250px 250px 250px 250px 250px;
+    grid-template-rows: 400px 400px;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.notFound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+    font-size: 40px;
+    font-weight: bold;
+    color: red;
+}
+
+@keyframes blink {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.button {
+    position: relative;
+    overflow: hidden;
+    width: 100px;
+    height: 36px;
+    background-color: #385d8c;
+    color: #a2e0fd;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 2px;
+}
+
+.button::after {
+    display: block;
+    content: '';
+    position: absolute;
+
+    left: -100%;
+    top: 0;
+    height: 100%;
+    width: 20%;
+
+    transform: skew(45deg);
+
+    background-color: #ffffff;
+    opacity: 0.7;
+
+    z-index: 2;
+}
+
+.button:hover::after {
+    animation: blink 0.35s ease;
+    transform: skew(45deg);
+    color: #99ffff;
+    font-weight: bold;
+}
+
+.button:hover::before {
+    display: block;
+    content: '';
+    position: absolute;
+
+    left: -100vw;
+    top: 0;
+    height: 100vh;
+    width: 300vw;
+
+    background-color: #ffffff;
+    opacity: 0.2;
+
+    z-index: 1;
+}
+
+.button:focus {
+    outline: #a2e0fd solid 1px;
+    border-color: #385d8c;
+}
+
+.button:active {
+    background-color: #a2e0fd;
+    color: #385d8c;
+}
+
+.button:disabled {
+    background-color: #000 !important;
+    color: #a2e0fd;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.buttonBlock {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
