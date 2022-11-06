@@ -33,7 +33,7 @@ function App() {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div>
             <h1 className={styles.title}>Movie Catalog</h1>
             <div className={styles.searchLine}>
                 <Search value={title}

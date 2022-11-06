@@ -6,6 +6,13 @@
     position: relative;
     width: 300px;
 }
+
+@media (max-width: 450px) {
+    .search {
+        width: 100%;
+    }
+}
+
 .icon {
     width: 24px;
     height: 24px;
