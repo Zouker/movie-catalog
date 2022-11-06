@@ -1,58 +1,43 @@
-import React, {useEffect, useState} from 'react';
-import {API, searchMovieType} from './api/api';
+import React from 'react';
 import {Movie} from './components/Movie/Movie';
 import styles from './App.module.css'
-import {Search} from './components/Search/Search';
+import {Search} from './common/Search/Search';
+import {fetchMovies, setTitle} from './redux/movies-reducer';
+import {useAppDispatch, useAppSelector} from './redux/store';
+import {Preloader} from './common/Preloader/Preloader';
 
 function App() {
-
-    const [title, setTitle] = useState('');
-    const [searchResultByType, setSearchResultByType] = useState<searchMovieType | ''>('');
-    const [page, setPage] = useState(1)
-    const [totalResults, setTotalResults] = useState(0)
-    const [type, setType] = useState('')
-
-    const searchByType = async () => {
-        try {
-            const {data} = await API.searchFilmsByType(title, type, page)
-            const {Search, Error, Response, totalResults} = data;
-            Response === 'True' ? setSearchResultByType(Search) : setSearchResultByType(Error)
-            setTotalResults(totalResults)
-        } catch (err) {
-            console.log('err', err)
-        }
-    }
+    const dispatch = useAppDispatch()
+    const searchResultByType = useAppSelector(state => state.movies.movies)
+    const totalResults = useAppSelector(state => state.movies.totalResults)
+    const page = useAppSelector(state => state.movies.page)
+    const type = useAppSelector(state => state.movies.movieType)
+    const isLoading = useAppSelector(state => state.movies.isLoading)
+    const isError = useAppSelector(state => state.movies.isError)
+    const title = useAppSelector(state => state.movies.title)
 
     const nextPage = () => {
-        setPage(page + 1)
+        dispatch(fetchMovies(title.trim(), type, page + 1))
     }
 
     const prevPage = () => {
-        page > 1 && setPage(page - 1)
+        dispatch(fetchMovies(title.trim(), type, page - 1))
     }
 
     const searchMovie = () => {
-        setType('movie')
-        searchByType()
-        setPage(1)
+        dispatch(fetchMovies(title.trim(), 'movie', 1))
     }
 
     const searchSeries = () => {
-        setType('series')
-        searchByType()
-        setPage(1)
+        dispatch(fetchMovies(title.trim(), 'series', 1))
     }
-
-    useEffect(() => {
-        searchByType()
-    }, [page, type])
 
     return (
         <div className={styles.wrapper}>
             <h1 className={styles.title}>Movie Catalog</h1>
             <div className={styles.searchLine}>
                 <Search value={title}
-                        onChange={(e) => setTitle(e.currentTarget.value)}/>
+                        onChange={(e) => dispatch(setTitle(e.currentTarget.value))}/>
                 <button className={styles.button} onClick={searchMovie}
                 >Movie
                 </button>
@@ -60,8 +45,9 @@ function App() {
                 >Series
                 </button>
             </div>
+            {isLoading && <Preloader/>}
             <div className={styles.container}>
-                {Array.isArray(searchResultByType)
+                {searchResultByType.length && Array.isArray(searchResultByType)
                     ? <div>
                         {totalResults} results found
                         <div className={styles.catalog}>
@@ -82,7 +68,9 @@ function App() {
                             </button>
                         </div>
                     </div>
-                    : <div className={styles.notFound}><>{searchResultByType}</>
+                    : isError &&
+                    <div className={styles.notFound}>
+                        <>{searchResultByType}</>
                     </div>}
             </div>
         </div>
