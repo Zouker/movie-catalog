@@ -47,7 +47,7 @@ function App() {
             </div>
             {isLoading && <Preloader/>}
             <div className={styles.container}>
-                {searchResultByType.length && Array.isArray(searchResultByType)
+                {!isLoading && searchResultByType.length && Array.isArray(searchResultByType)
                     ? <div>
                         {totalResults} results found
                         <div className={styles.catalog}>

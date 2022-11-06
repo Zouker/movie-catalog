@@ -21,10 +21,9 @@
 
 .catalog {
     display: grid;
-    grid-template-columns: 250px 250px 250px 250px 250px;
-    grid-template-rows: 400px 400px;
-    gap: 30px;
-    margin-top: 30px;
+    grid-template-columns: 200px 200px 200px 200px 200px;
+    grid-template-rows: 350px 350px;
+    gap: 20px;
 }
 
 .notFound {
